@@ -32,7 +32,12 @@ const server = http.createServer((req, res) => {
   res.setHeader("Content-Type", "application/json");
   res.setHeader("Access-Control-Allow-Origin", "*");
 
-  if (req.method === "GET" && req.url === "/") {
+  const path = new URL(
+    req.url,
+    "http://localhost"
+  ).pathname.replace(/\/+$/, "") || "/";
+
+  if (req.method === "GET" && path === "/") {
     res.writeHead(200);
     res.end(JSON.stringify({
       message: "Welcome to the DRONET backend!",
@@ -41,7 +46,7 @@ const server = http.createServer((req, res) => {
     return;
   }
 
-  if (req.method === "GET" && req.url === "/products") {
+  if (req.method === "GET" && path === "/products") {
     res.writeHead(200);
     res.end(JSON.stringify(products));
     return;
